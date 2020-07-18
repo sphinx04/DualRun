@@ -20,8 +20,15 @@ public class CM_Shaker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        amplitude = Mathf.Lerp(amplitude, 0f, 10 * Time.deltaTime);
-        CM.m_AmplitudeGain = amplitude;
-        CM.m_FrequencyGain = Mathf.Lerp(5f, CM.m_FrequencyGain, 10 * Time.deltaTime);
+        if (amplitude > 0.01f)
+        {
+            amplitude = Mathf.Lerp(amplitude, 0f, 10 * Time.deltaTime);
+            CM.m_AmplitudeGain = amplitude;
+            //CM.m_FrequencyGain = Mathf.Lerp(10f, CM.m_FrequencyGain, 10 * Time.deltaTime);
+        }
+        else
+        {
+            CM.m_AmplitudeGain = 0f;
+        }
     }
 }
