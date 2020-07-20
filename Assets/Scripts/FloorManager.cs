@@ -34,8 +34,16 @@ public class FloorManager : MonoBehaviour
     public void AddFloorPlatform()
     {
         GameObject newObject = poolOfFloors[Random.Range(0, poolOfFloors.Count - 0)];
-        floors.Add(Instantiate(newObject, 
-            new Vector3(0, -1, newObject.transform.localScale.z * (floors.Count) + floors[0].transform.position.z), 
-            new Quaternion()));
+        float floorsLenght = 0;
+
+        foreach (GameObject item in floors)
+        {
+            floorsLenght += item.transform.localScale.z;
+        }
+
+
+        floorsLenght += (newObject.transform.localScale.z - floors[0].transform.localScale.z) / 2;
+
+        floors.Add(Instantiate(newObject, new Vector3(0, -1, floorsLenght + (floors[0].transform.position.z)), new Quaternion()));
     }
 }
