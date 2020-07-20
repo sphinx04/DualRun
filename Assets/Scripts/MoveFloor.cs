@@ -7,7 +7,7 @@ public class MoveFloor : MonoBehaviour
 {
     void Update()
     {
-        if (transform.position.z < -transform.localScale.z)
+        if (transform.position.z < -(transform.localScale.z + 25))
         {
             FloorManager.Instance.floors.Remove(gameObject);
             Destroy(gameObject);

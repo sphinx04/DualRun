@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float distance = 3;
     public int rowCount = 3;
     public ParticleSystem particleSystem;
+    public float jumpForce = 30f;
 
     private Rigidbody rigidbody;
 
@@ -45,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            rigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+            rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
