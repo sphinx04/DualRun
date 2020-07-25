@@ -21,6 +21,7 @@ public class FloorManager : MonoBehaviour
     private void Start()
     {
         AddFloorPlatform();
+        StartCoroutine(FastenFloor());
     }
 
     void Update()
@@ -45,5 +46,12 @@ public class FloorManager : MonoBehaviour
         //floorsLenght += (newObject.transform.localScale.z - floors[0].transform.localScale.z) / 2;
 
         floors.Add(Instantiate(newObject, floors[floors.Count - 1].transform.GetChild(0).position, new Quaternion()));
+    }
+
+    private IEnumerator FastenFloor()
+    {
+        yield return new WaitForSeconds(5);
+        floorSpeed *= 1.1f;
+        StartCoroutine(FastenFloor());
     }
 }

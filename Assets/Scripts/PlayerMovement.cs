@@ -11,12 +11,25 @@ public class PlayerMovement : MonoBehaviour
     public ParticleSystem particleSystem;
     public float jumpForce = 30f;
 
+    public Transform groundCheck;
+
+    private bool grounded;
     private Rigidbody rigidbody;
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
     }
+
+
+    private void FixedUpdate()
+    {
+        Collider[] colls = Physics.OverlapSphere(groundCheck.position, .2f);
+        grounded = colls.Length > 1;
+        print(colls.Length);
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         //print(collision.gameObject.name);
@@ -44,9 +57,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && grounded)
         {
-            rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            //rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            MoveUp();
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -59,9 +73,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Move(float distance)
+    private void Move(Vector3 distance)
     {
-        transform.position += new Vector3(distance,0,0);
+        transform.position += distance;
         particleSystem.Play();
         CM_Shaker.amplitude = .5f;
     }
@@ -69,12 +83,25 @@ public class PlayerMovement : MonoBehaviour
     public void MoveLeft()
     {
         if (transform.position.x > -distance * (rowCount - 1))
-            Move(-distance);
+            Move(new Vector3(-distance,0,0));
     }    
     public void MoveRight()
     {
         if (transform.position.x < distance * (rowCount - 1))
-            Move(distance);
+            Move(new Vector3(distance,0,0));
+    }
+    public void MoveUp()
+    {
+        Move(new Vector3(0,3,0));
+        rigidbody.useGravity = false;
+        StartCoroutine(RestoreGravity());
+
+    }
+
+    IEnumerator RestoreGravity()
+    {
+        yield return new WaitForSeconds(.1f);
+        rigidbody.useGravity = true;
     }
     
 }
